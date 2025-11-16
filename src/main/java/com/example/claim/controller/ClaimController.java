@@ -34,4 +34,9 @@ public class ClaimController {
     public List<Claim> byUser(@PathVariable Long userId) {
         return claimRepository.findByClaimantId(userId);
     }
+    
+    @GetMapping("/testurl")
+    public String getMessage() {
+        return "Test Response";
+    }
 }
