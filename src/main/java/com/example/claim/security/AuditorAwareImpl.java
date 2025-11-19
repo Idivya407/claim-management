@@ -1,4 +1,4 @@
-package com.example.claim;
+package com.example.claim.security;
 
 import java.util.Optional;
 

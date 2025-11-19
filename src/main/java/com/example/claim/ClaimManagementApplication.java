@@ -6,6 +6,8 @@ import org.springframework.context.annotation.Bean;
 import org.springframework.data.domain.AuditorAware;
 import org.springframework.data.jpa.repository.config.EnableJpaAuditing;
 
+import com.example.claim.security.AuditorAwareImpl;
+
 @SpringBootApplication
 @EnableJpaAuditing(auditorAwareRef = "auditorProvider")
 public class ClaimManagementApplication {

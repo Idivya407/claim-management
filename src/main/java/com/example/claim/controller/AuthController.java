@@ -1,4 +1,4 @@
-package com.example.claim;
+package com.example.claim.controller;
 
 import com.example.claim.dto.AuthRequest;
 import com.example.claim.dto.AuthResponse;
