@@ -28,7 +28,7 @@ public class ClaimController {
         User user = userRepository.findById(userId).orElseThrow();
         claim.setClaimant(user);
         claim.setStatus(ClaimStatus.SUBMITTED);
-        claim.setSubmittedAt(LocalDateTime.now());
+        //claim.setSubmittedAt(LocalDateTime.now());
         return claimRepository.save(claim);
     }
     
