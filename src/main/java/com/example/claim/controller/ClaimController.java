@@ -1,17 +1,29 @@
 package com.example.claim.controller;
 
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
+
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PatchMapping;
+import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.PutMapping;
+import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RestController;
+
 import com.example.claim.model.Claim;
 import com.example.claim.model.ClaimStatus;
 import com.example.claim.model.User;
 import com.example.claim.repository.ClaimRepository;
 import com.example.claim.repository.UserRepository;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.web.bind.annotation.*;
 
-import java.time.LocalDateTime;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.media.Content;
+import io.swagger.v3.oas.annotations.responses.ApiResponse;
+import io.swagger.v3.oas.annotations.responses.ApiResponses;
 
 @RestController
 @RequestMapping("/claims")
@@ -23,6 +35,15 @@ public class ClaimController {
     @Autowired
     private UserRepository userRepository;
 
+    @Operation(
+            summary = "Submit a new claim",
+            description = "This API allows a user to submit a claim with amount and details."
+    )
+    @ApiResponses({
+        @ApiResponse(responseCode = "200", description = "Claim submitted successfully",
+                content = @Content(mediaType = "application/json")),
+        @ApiResponse(responseCode = "404", description = "User not found")
+    })
     @PostMapping("/submit/{userId}")
     public Claim submitClaim(@PathVariable Long userId, @RequestBody Claim claim) {
         User user = userRepository.findById(userId).orElseThrow();
@@ -82,9 +103,9 @@ public class ClaimController {
     
     
 
-    @GetMapping("/byUser/{userId}")
-    public List<Claim> byUser(@PathVariable Long userId) {
-        return claimRepository.findByClaimantId(userId);
+    @GetMapping("/byUser/{claimantId}")
+    public List<Claim> fetchClaimDetailsbyClaimantId(@PathVariable Long claimantId) {
+        return claimRepository.findByClaimantId(claimantId);
     }
     
     @GetMapping("/testurl")

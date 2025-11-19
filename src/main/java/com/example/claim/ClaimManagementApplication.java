@@ -8,6 +8,9 @@ import org.springframework.data.jpa.repository.config.EnableJpaAuditing;
 
 import com.example.claim.security.AuditorAwareImpl;
 
+import io.swagger.v3.oas.models.OpenAPI;
+import io.swagger.v3.oas.models.info.Info;
+
 @SpringBootApplication
 @EnableJpaAuditing(auditorAwareRef = "auditorProvider")
 public class ClaimManagementApplication {
@@ -21,4 +24,12 @@ public class ClaimManagementApplication {
         return new AuditorAwareImpl();
     }
 
+    @Bean
+    public OpenAPI customOpenAPI() {
+        return new OpenAPI()
+                .info(new Info()
+                        .title("Claim Management API")
+                        .version("1.0")
+                        .description("API documentation for Claim Management System"));
+    }
 }
