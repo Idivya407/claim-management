@@ -8,8 +8,11 @@ import org.springframework.data.jpa.repository.config.EnableJpaAuditing;
 
 import com.example.claim.security.AuditorAwareImpl;
 
+import io.swagger.v3.oas.models.Components;
 import io.swagger.v3.oas.models.OpenAPI;
 import io.swagger.v3.oas.models.info.Info;
+import io.swagger.v3.oas.models.security.SecurityRequirement;
+import io.swagger.v3.oas.models.security.SecurityScheme;
 
 @SpringBootApplication
 @EnableJpaAuditing(auditorAwareRef = "auditorProvider")
@@ -30,6 +33,13 @@ public class ClaimManagementApplication {
                 .info(new Info()
                         .title("Claim Management API")
                         .version("1.0")
-                        .description("API documentation for Claim Management System"));
+                        .description("API documentation for Claim Management System"))
+                .addSecurityItem(new SecurityRequirement().addList("bearerAuth"))
+                .components(new Components()
+                        .addSecuritySchemes("bearerAuth",
+                                new SecurityScheme()
+                                        .type(SecurityScheme.Type.HTTP)
+                                        .scheme("bearer")
+                                        .bearerFormat("JWT")))	;
     }
 }
