@@ -4,6 +4,8 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Service;
 
 import com.example.claim.model.Claim;
@@ -13,23 +15,33 @@ import com.example.claim.repository.ClaimRepository;
 import com.example.claim.repository.UserRepository;
 
 import lombok.RequiredArgsConstructor;
-
 @Service
 @RequiredArgsConstructor
 public class ClaimService {
+    private static final Logger logger = LoggerFactory.getLogger(ClaimService.class);
 
     private final ClaimRepository claimRepository;
     private final UserRepository userRepository;
 
     // Submit Claim
     public Claim submitClaim(Long userId, Claim claim) {
+        logger.info("Submitting claim for userId={}", userId);
+
         User user = userRepository.findById(userId)
-                .orElseThrow(() -> new RuntimeException("User not found"));
+                .orElseThrow(() -> {
+                    logger.error("User not found for id={}", userId);
+                    return new RuntimeException("User not found");
+                });
+
+        logger.debug("User found: {}", user.getUsername());
 
         claim.setClaimant(user);
         claim.setStatus(ClaimStatus.SUBMITTED);
 
-        return claimRepository.save(claim);
+        Claim saved = claimRepository.save(claim);
+
+        logger.info("Claim submitted successfully. claimId={}", saved.getId());
+        return saved;
     }
 
     // Update Claim Amount
